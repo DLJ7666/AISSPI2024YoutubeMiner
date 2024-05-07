@@ -12,6 +12,10 @@ public class YoutubeChannelWrapper {
     @JsonProperty("snippet")
     private YoutubeChannel datos;
 
+    public YoutubeChannelWrapper(String id, YoutubeChannel datos) {
+        this.id = id;
+        this.datos = datos;
+    }
 
 
 }
