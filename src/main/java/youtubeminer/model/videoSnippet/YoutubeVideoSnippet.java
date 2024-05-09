@@ -6,6 +6,7 @@ import youtubeminer.model.caption.YoutubeCaption;
 import youtubeminer.model.comment.YoutubeComment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -66,6 +67,9 @@ public class YoutubeVideoSnippet {
         this.snippet = snippet;
     }
 
+    public void addTexttracks(Collection<YoutubeCaption> texttracks) {
+        this.youtubeCaptions.addAll(texttracks);
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

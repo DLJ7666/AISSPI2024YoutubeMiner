@@ -3,6 +3,8 @@ package youtubeminer.model.comment;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YoutubeCommentSnippet__1 {
 
@@ -20,6 +22,7 @@ public class YoutubeCommentSnippet__1 {
     private AuthorChannelId authorChannelId;
     @JsonProperty("publishedAt")
     private String publishedAt;
+
 
     @JsonProperty("textOriginal")
     public String getTextOriginal() {
@@ -50,6 +53,7 @@ public class YoutubeCommentSnippet__1 {
     public void setAuthorProfileImageUrl(String authorProfileImageUrl) {
         this.authorProfileImageUrl = authorProfileImageUrl;
     }
+
 
     @JsonProperty("authorChannelUrl")
     public String getAuthorChannelUrl() {
