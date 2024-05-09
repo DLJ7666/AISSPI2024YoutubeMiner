@@ -14,6 +14,9 @@ public class YoutubeChannel {
     @JsonProperty("snippet")
     private YoutubeChannelSnippet snippet;
 
+    @JsonProperty("contentDetails")
+    private ContentDetails playListIdWrapper;
+
     // This attribute has been added manually
     @JsonProperty("videos")
     private List<YoutubeVideoSnippet> videos;
