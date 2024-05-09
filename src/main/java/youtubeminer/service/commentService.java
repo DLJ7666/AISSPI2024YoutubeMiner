@@ -26,9 +26,8 @@ public class commentService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer" + TOKEN);
         HttpEntity<YoutubeComment> request = new HttpEntity<>(null, headers);
-
-        ResponseEntity<YoutubeComment> response = restTemplate.exchange(uri, HttpMethod.GET, request, YoutubeComment.class);
-
+        ResponseEntity<YoutubeComment> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeComment.class);
         if(response.getBody() != null){
             res = response.getBody();
         }

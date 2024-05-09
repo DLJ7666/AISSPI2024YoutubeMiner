@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import youtubeminer.model.videoSnippet.YoutubeVideoSnippet;
+import youtubeminer.model.videoSnippet.YoutubeVideoSnippetSearch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,8 @@ public class videoSnippetService {
         headers.set("Authorization", "Bearer" + TOKEN);
         HttpEntity<YoutubeVideoSnippet> request = new HttpEntity<>(null, headers);
 
-        ResponseEntity<YoutubeVideoSnippet> response = restTemplate.exchange(uri, HttpMethod.GET, request, YoutubeVideoSnippet.class);
+        ResponseEntity<YoutubeVideoSnippet> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeVideoSnippet.class);
 
         if(response.getBody() != null){
             res = response.getBody();
@@ -36,15 +38,16 @@ public class videoSnippetService {
         return res;
     }
 
-    public List<YoutubeVideoSnippet> getYoutubeVideoSnippets() {
-        List<YoutubeVideoSnippet> res = new ArrayList<>();
-        String uri = "https://api.youtube.com/videos";
+    public YoutubeVideoSnippetSearch getYoutubeVideoSnippets(String playListId) {
+        YoutubeVideoSnippetSearch res = null;
+        String uri = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + playListId;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + TOKEN);
-        HttpEntity<YoutubeVideoSnippet> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeVideoSnippet> response = restTemplate.exchange(uri, HttpMethod.GET, request, YoutubeVideoSnippet.class);
+        HttpEntity<YoutubeVideoSnippetSearch> request = new HttpEntity<>(null, headers);
+        ResponseEntity<YoutubeVideoSnippetSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeVideoSnippetSearch.class);
         if (response.getBody() != null) {
-            res.add(response.getBody());
+            res=response.getBody();
         }
         return res;
     }

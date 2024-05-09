@@ -22,11 +22,13 @@ public class channelService {
 
     public YoutubeChannel getYoutubeChannel(String id){
         YoutubeChannel res = null;
-        String uri = String.format("https://api.youtube.com/channels/%s", id);
+        String uri = String.format(
+                "https://www.googleapis.com/youtube/v3/channels?part=id&part=snippet&part=contentDetails&id=%s", id);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer" + TOKEN);
         HttpEntity<YoutubeChannel> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeChannel> response = restTemplate.exchange(uri, HttpMethod.GET, request, YoutubeChannel.class);
+        ResponseEntity<YoutubeChannel> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeChannel.class);
         if(response.getBody() != null){
             res = response.getBody();
         }

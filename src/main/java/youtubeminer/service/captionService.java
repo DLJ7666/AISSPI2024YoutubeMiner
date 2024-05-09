@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import youtubeminer.model.caption.YoutubeCaption;
+import youtubeminer.model.caption.YoutubeCaptionSearch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,9 @@ public class captionService {
 
     private static final String TOKEN = "Poner token";
 
-    public YoutubeCaption getYoutubeCaption(String videoId, String texttrackId) {
+    public YoutubeCaption getYoutubeCaption(String captionId) {
         YoutubeCaption res = null;
-        String uri = String.format("https://api.youtube.com/videos/%s/texttracks/%s", videoId, texttrackId);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/captions/%s", captionId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer" + TOKEN);
@@ -34,15 +35,17 @@ public class captionService {
         return res;
     }
 
-    public List<YoutubeCaption> getYoutubeCaptions(String videoId) {
-        List<YoutubeCaption> res = new ArrayList<>();
-        String uri = String.format("https://api.youtube.com/videos/%s/texttracks", videoId);
+    public YoutubeCaptionSearch getYoutubeCaptions(String videoId) {
+        YoutubeCaptionSearch res = null;
+        String uri = String.format("https://www.googleapis.com/youtube/v3/captions?part=id&part=snippet&videoId=%s",
+                videoId);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + TOKEN);
-        HttpEntity<YoutubeCaption> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeCaption> response = restTemplate.exchange(uri, HttpMethod.GET, request, YoutubeCaption.class);
+        HttpEntity<YoutubeCaptionSearch> request = new HttpEntity<>(null, headers);
+        ResponseEntity<YoutubeCaptionSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeCaptionSearch.class);
         if (response.getBody() != null) {
-            res.add(response.getBody());
+            res = response.getBody();
         }
         return res;
     }
