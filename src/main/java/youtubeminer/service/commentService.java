@@ -18,11 +18,12 @@ public class commentService {
 
     @Autowired
     RestTemplate restTemplate;
-    private static final String TOKEN = "Poner token";
+
+    private static final String TOKEN = "AIzaSyDQlxgZcRO6tpIEeDXhqBEU53lHNRoetC0";
 
     public YoutubeComment getYoutubeComment(String videoId, String commentId) {
         YoutubeComment res = null;
-        String uri = String.format("https://api.youtube.com/videos/%s/comments/%s", videoId, commentId);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?part=id&part=snippet&id=%s", videoId, commentId);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer" + TOKEN);
         HttpEntity<YoutubeComment> request = new HttpEntity<>(null, headers);
@@ -36,7 +37,7 @@ public class commentService {
 
     public List<YoutubeComment> getYoutubeComments(String videoId) {
         List<YoutubeComment> res = new ArrayList<>();
-        String uri = String.format("https://api.youtube.com/videos/%s/comments", videoId);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?part=id&id=%s", videoId);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + TOKEN);
         HttpEntity<YoutubeComment> request = new HttpEntity<>(null, headers);

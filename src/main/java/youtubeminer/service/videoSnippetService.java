@@ -19,11 +19,11 @@ public class videoSnippetService {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String TOKEN = "Poner token";
+    private static final String TOKEN = "AIzaSyDQlxgZcRO6tpIEeDXhqBEU53lHNRoetC0";
 
     public YoutubeVideoSnippet getYoutubeVideoSnippet(String id) {
         YoutubeVideoSnippet res = null;
-        String uri = String.format("https://api.youtube.com/videos/%s", id);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/playlistItems?part=playlistId&part=snippet&part=contentDetails&playlistId=%s", id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer" + TOKEN);

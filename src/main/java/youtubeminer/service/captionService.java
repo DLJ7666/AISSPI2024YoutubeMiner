@@ -18,11 +18,11 @@ public class captionService {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String TOKEN = "Poner token";
+    private static final String TOKEN = "AIzaSyDQlxgZcRO6tpIEeDXhqBEU53lHNRoetC0";
 
     public YoutubeCaption getYoutubeCaption(String captionId) {
         YoutubeCaption res = null;
-        String uri = String.format("https://www.googleapis.com/youtube/v3/captions/%s", captionId);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/captions?id=%s", captionId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer" + TOKEN);

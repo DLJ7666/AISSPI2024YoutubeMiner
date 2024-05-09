@@ -18,7 +18,7 @@ public class channelService {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String TOKEN = "Poner token";
+    private static final String TOKEN = "AIzaSyDQlxgZcRO6tpIEeDXhqBEU53lHNRoetC0";
 
     public YoutubeChannel getYoutubeChannel(String id){
         YoutubeChannel res = null;
@@ -37,7 +37,7 @@ public class channelService {
 
     public List<YoutubeChannel> getYoutubeChannels() {
         List<YoutubeChannel> res = new ArrayList<>();
-        String uri = "https://api.youtube.com/channels";
+        String uri = "https://www.googleapis.com/youtube/v3/channels?part=id&id=%s";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + TOKEN);
         HttpEntity<YoutubeChannel> request = new HttpEntity<>(null, headers);
