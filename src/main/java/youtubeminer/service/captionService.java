@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import youtubeminer.model.caption.YoutubeCaption;
 import youtubeminer.model.caption.YoutubeCaptionSearch;
-import youtubeminer.model.caption.YoutubeVideoCaptionList;
 import youtubeminer.model.videoSnippet.YoutubeVideoSnippetId;
-import youtubeminer.model.videoSnippet.YoutubeVideoSnippetList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +19,13 @@ public class captionService {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String TOKEN = "AIzaSyDQlxgZcRO6tpIEeDXhqBEU53lHNRoetC0";
+    private static final String TOKEN = "AIzaSyCUWuAfA7E_Z8VZI5Uzik_Yk526tj-BdgQ";
 
-    public YoutubeCaption getYoutubeCaption(String captionId) {
+    public YoutubeCaption getYoutubeCaption(String captionId, String videoId) {
         YoutubeCaption res = null;
-        String uri = String.format("https://www.googleapis.com/youtube/v3/captions?id=%s", captionId);
-
+        String uri = String.format("https://youtube.googleapis.com/youtube/v3/captions?"+
+                "key=%s&part=id&part=snippet&videoId=%s&id=%s", TOKEN, videoId, captionId);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer" + TOKEN);
         HttpEntity<YoutubeCaption> request = new HttpEntity<>(null, headers);
         ResponseEntity<YoutubeCaption> response = restTemplate.exchange(uri, HttpMethod.GET, request,
                 YoutubeCaption.class);
@@ -40,10 +37,9 @@ public class captionService {
 
     public YoutubeCaptionSearch getYoutubeCaptions(String videoId) {
         YoutubeCaptionSearch res = null;
-        String uri = String.format("https://www.googleapis.com/youtube/v3/captions?part=id&part=snippet&videoId=%s",
-                videoId);
+        String uri = String.format("https://youtube.googleapis.com/youtube/v3/captions?"+
+                "key=%s&part=id&part=snippet&videoId=%s", TOKEN, videoId);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + TOKEN);
         HttpEntity<YoutubeCaptionSearch> request = new HttpEntity<>(null, headers);
         ResponseEntity<YoutubeCaptionSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
                 YoutubeCaptionSearch.class);
@@ -52,24 +48,4 @@ public class captionService {
         }
         return res;
     }
-
-    public YoutubeVideoCaptionList getYoutubeCaptionList(YoutubeVideoSnippetId videoId, Integer page) {
-        YoutubeVideoCaptionList res = null;
-        Integer pagina = page;
-        if(pagina==null) {
-            pagina = 1;
-        }
-        String uri = String.format("https://www.googleapis.com/youtube/v3/captions?part=id&part=snippet&videoId=%s", videoId, pagina);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + TOKEN);
-        HttpEntity<YoutubeVideoCaptionList> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeVideoCaptionList> response = restTemplate.exchange(uri, HttpMethod.GET, request,
-                YoutubeVideoCaptionList.class);
-        if (response.getBody() != null) {
-            res = response.getBody();
-        }
-        return res;
-    }
-
-
 }
