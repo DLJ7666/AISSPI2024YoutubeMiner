@@ -13,6 +13,20 @@ public class YoutubeVideoSnippetDetails {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("resourceId")
+    private ResourceId idWrapper;
+
+    public YoutubeVideoSnippetDetails() {
+    }
+
+    public ResourceId getIdWrapper() {
+        return idWrapper;
+    }
+
+    public void setIdWrapper(ResourceId idWrapper) {
+        this.idWrapper = idWrapper;
+    }
+
     @JsonProperty("publishedAt")
     public String getPublishedAt() {
         return publishedAt;
