@@ -13,7 +13,7 @@ import java.util.List;
 public class YoutubeVideoSnippet {
 
     @JsonProperty("resourceId")
-    private YoutubeVideoSnippetId id;
+    private YoutubeVideoSnippetId resourceId;
     @JsonProperty("snippet")
     private YoutubeVideoSnippetDetails snippet;
 
@@ -47,14 +47,12 @@ public class YoutubeVideoSnippet {
         this.youtubeCaptions = youtubeCaptions;
     }
 
-    @JsonProperty("id")
-    public YoutubeVideoSnippetId getId() {
-        return id;
+    public YoutubeVideoSnippetId getResourceIdId() {
+        return resourceId;
     }
 
-    @JsonProperty("id")
-    public void setId(YoutubeVideoSnippetId id) {
-        this.id = id;
+    public void setId(YoutubeVideoSnippetId resourceId) {
+        this.resourceId = resourceId;
     }
 
     @JsonProperty("snippet")
@@ -76,7 +74,7 @@ public class YoutubeVideoSnippet {
         sb.append(YoutubeVideoSnippet.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
-        sb.append(((this.id == null)?"<null>":this.id));
+        sb.append(((this.resourceId == null)?"<null>":this.resourceId));
         sb.append(',');
         sb.append("snippet");
         sb.append('=');
