@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import videominer.model.Caption;
+import videominer.model.Channel;
 import videominer.model.Comment;
 import videominer.model.User;
+import videominer.model.Video;
 import youtubeminer.model.caption.YoutubeCaption;
 import youtubeminer.model.caption.YoutubeCaptionSearch;
 import youtubeminer.model.caption.YoutubeCaptionSnippet;
-import youtubeminer.model.caption.YoutubeVideoCaptionList;
 import youtubeminer.model.channel.*;
 import youtubeminer.model.comment.*;
 import youtubeminer.model.videoSnippet.*;
@@ -29,44 +31,59 @@ import java.util.List;
 public class YoutubeController {
 
     @Autowired
-    captionService CaptionService;
+    captionService captionService;
 
     @Autowired
-    channelService ChannelService;
+    channelService channelService;
 
     @Autowired
-    commentService CommentService;
+    commentService commentService;
 
     @Autowired
-    videoSnippetService VideoSnippetService;
-
-    @Autowired
-    AuthorChannelId AuthorChannelId;
+    videoSnippetService videoSnippetService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void create(String youtubeChannelId) {
-        YoutubeChannel channel = ChannelService.getYoutubeChannel(youtubeChannelId);
-        YoutubeVideoSnippetList videoList = VideoSnippetService.getYoutubeVideoList(youtubeChannelId, null);
-        List<YoutubeVideoSnippet> videos = new ArrayList<>(videoList.getVideos());
-        for(int i=2; i<=videoList.getNumPags(); i++){
-            videos.addAll(VideoSnippetService.getYoutubeVideoList(youtubeChannelId,i).getVideos());
+        YoutubeChannel channel = channelService.getYoutubeChannel(youtubeChannelId);
+        Channel canal =new Channel(channel.getSnippet().getTitle(), channel.getSnippet().getDescription(),
+                channel.getSnippet().getPublishedAt());
+        String uploadsPlayListId = channel.getPlayListIdWrapper().getPlayListsIds().getUploadsPlayListId();
+        YoutubeVideoSnippetSearch videoList = videoSnippetService.getYoutubeVideoSnippets(uploadsPlayListId);
+        List<YoutubeVideoSnippet> videos = new ArrayList<>(videoList.getItems());
+        String videosNextPageToken = videoList.getNextPageToken();
+        while(videosNextPageToken!=null){
+            videoList = videoSnippetService.getYoutubeVideoSnippets(uploadsPlayListId,videosNextPageToken);
+            videos.addAll(videoList.getItems());
+            videosNextPageToken = videoList.getNextPageToken();
         }
-        for(YoutubeVideoSnippet video:videos){
-            YoutubeVideoCaptionList captionList = CaptionService.getYoutubeCaptionList(video.getId(), null);
-            video.addTexttracks(captionList.getCaptions());
-            for(int i=2; i<=captionList.getNumPags(); i++) {
-                video.addTexttracks(CaptionService.getYoutubeCaptionList(video.getId(), i).getCaptions());
+        for(YoutubeVideoSnippet videoSnippet:videos){
+            Video v = new Video();
+            v.setName(videoSnippet.getSnippet().getTitle());
+            v.setDescription(videoSnippet.getSnippet().getDescription());
+            v.setReleaseTime(videoSnippet.getSnippet().getPublishedAt());
+            YoutubeCaptionSearch captionList = captionService.getYoutubeCaptions(
+                    videoSnippet.getResourceId().getVideoId());
+            videoSnippet.addCaptions(captionList.getItems());
+            for(YoutubeCaption caption:videoSnippet.getCaptions()) {
+                Caption subtitulo = new Caption(caption.getSnippet().getName(), caption.getSnippet().getLanguage());
             }
-            YoutubeVideoCommentList commentList = CommentService.getYoutubeCommentList(video.getId(), null);
-            List<YoutubeComment> comments = new ArrayList<>(commentList.getComments());
-            for(int i=2; i<=commentList.getNumPags(); i++) {
-                comments.addAll(CommentService.getYoutubeCommentList(video.getId(), i).getComments());
+            YoutubeCommentSearch commentList = commentService.getYoutubeComments(
+                    videoSnippet.getResourceId().getVideoId());
+            List<YoutubeComment> comments = new ArrayList<>(commentList.getItems());
+            String commentsNextPageToken = commentList.getNextPageToken();
+            while(commentsNextPageToken!=null) {
+                commentList = commentService.getYoutubeComments(videoSnippet.getResourceId().getVideoId(),
+                        commentsNextPageToken);
+                comments.addAll(commentList.getItems());
+                commentsNextPageToken = commentList.getNextPageToken();
             }
             for(YoutubeComment comment:comments) {
-                YoutubeCommentSnippet__1 y = CommentService.getYoutubeCommentSnippet(comment.getCommentSnippet(),null);
-                User u = new User(y.getAuthorDisplayName(),y.getAuthorChannelUrl(),y.getAuthorProfileImageUrl());
-                Comment c = new Comment(y.getTextOriginal(), y.getPublishedAt(), u);
+                User u = new User(comment.getCommentSnippet().getTopLevelComment().getSnippet().getAuthorDisplayName(),
+                        comment.getCommentSnippet().getTopLevelComment().getSnippet().getAuthorChannelUrl(),
+                        comment.getCommentSnippet().getTopLevelComment().getSnippet().getAuthorProfileImageUrl());
+                Comment c = new Comment(comment.getCommentSnippet().getTopLevelComment().getSnippet().getTextOriginal(),
+                        comment.getCommentSnippet().getTopLevelComment().getSnippet().getPublishedAt(), u);
             }
         }
     }
