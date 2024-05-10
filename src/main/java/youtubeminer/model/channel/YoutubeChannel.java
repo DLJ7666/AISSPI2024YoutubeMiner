@@ -53,6 +53,14 @@ public class YoutubeChannel {
         this.snippet = snippet;
     }
 
+    public ContentDetails getPlayListIdWrapper() {
+        return playListIdWrapper;
+    }
+
+    public void setPlayListIdWrapper(ContentDetails playListIdWrapper) {
+        this.playListIdWrapper = playListIdWrapper;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
