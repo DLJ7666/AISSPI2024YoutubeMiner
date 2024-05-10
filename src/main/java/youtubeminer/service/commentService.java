@@ -7,11 +7,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import youtubeminer.model.caption.YoutubeVideoCaptionList;
 import youtubeminer.model.comment.YoutubeComment;
-import youtubeminer.model.comment.YoutubeCommentSnippet;
-import youtubeminer.model.comment.YoutubeCommentSnippet__1;
-import youtubeminer.model.comment.YoutubeVideoCommentList;
+import youtubeminer.model.comment.YoutubeCommentSearch;
 import youtubeminer.model.videoSnippet.YoutubeVideoSnippetId;
 
 import java.util.ArrayList;
@@ -28,9 +25,9 @@ public class commentService {
 
     public YoutubeComment getYoutubeComment(String videoId, String commentId) {
         YoutubeComment res = null;
-        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?part=id&part=snippet&id=%s", videoId, commentId);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?key=%spart=id&part=snippet&id=%s",
+                TOKEN, commentId);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer" + TOKEN);
         HttpEntity<YoutubeComment> request = new HttpEntity<>(null, headers);
         ResponseEntity<YoutubeComment> response = restTemplate.exchange(uri, HttpMethod.GET, request,
                 YoutubeComment.class);
@@ -42,50 +39,48 @@ public class commentService {
 
     public List<YoutubeComment> getYoutubeComments(String videoId) {
         List<YoutubeComment> res = new ArrayList<>();
-        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?part=id&id=%s", videoId);
+        String uri = String.format("https://www.googleapis.com/youtube/v3/commentThreads?"+
+                        "key=%s&textFormat=plainText&part=snippet&part=id&videoId=%s", TOKEN, videoId);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + TOKEN);
         HttpEntity<YoutubeComment> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeComment> response = restTemplate.exchange(uri, HttpMethod.GET, request, YoutubeComment.class);
+        ResponseEntity<YoutubeComment> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeComment.class);
         if (response.getBody() != null) {
             res.add(response.getBody());
         }
         return res;
     }
 
-    public YoutubeVideoCommentList getYoutubeCommentList(YoutubeVideoSnippetId videoId, Integer page) {
-        YoutubeVideoCommentList res = null;
-        Integer pagina = page;
-        if(pagina==null) {
-            pagina = 1;
-        }
-        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?part=id&id=%s", videoId, pagina);
+    public YoutubeCommentSearch getYoutubeCommentList(YoutubeVideoSnippetId videoId) {
+        YoutubeCommentSearch res = null;
+        String uri = String.format("https://www.googleapis.com/youtube/v3/commentThreads?"+
+                "key=%s&textFormat=plainText&part=snippet&part=id&videoId=%s", TOKEN, videoId);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + TOKEN);
-        HttpEntity<YoutubeVideoCommentList> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeVideoCommentList> response = restTemplate.exchange(uri, HttpMethod.GET, request,
-                YoutubeVideoCommentList.class);
+        HttpEntity<YoutubeCommentSearch> request = new HttpEntity<>(null, headers);
+        ResponseEntity<YoutubeCommentSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                YoutubeCommentSearch.class);
         if (response.getBody() != null) {
             res = response.getBody();
         }
         return res;
     }
 
-    public YoutubeCommentSnippet__1 getYoutubeCommentSnippet(YoutubeCommentSnippet commentId, Integer page) {
-        YoutubeCommentSnippet__1 res = null;
-        Integer pagina = page;
-        if(pagina==null) {
-            pagina = 1;
-        }
-        String uri = String.format("https://www.googleapis.com/youtube/v3/comments?part=id&id=%s", commentId, pagina);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + TOKEN);
-        HttpEntity<YoutubeCommentSnippet__1> request = new HttpEntity<>(null, headers);
-        ResponseEntity<YoutubeCommentSnippet__1> response = restTemplate.exchange(uri, HttpMethod.GET, request,
-                YoutubeCommentSnippet__1.class);
-        if (response.getBody() != null) {
-            res = response.getBody();
-        }
-        return res;
-    }
+//    public YoutubeCommentSnippet__1 getYoutubeCommentSnippet(YoutubeCommentSnippet commentId, Integer page) {
+//        YoutubeCommentSnippet__1 res = null;
+//        Integer pagina = page;
+//        if(pagina==null) {
+//            pagina = 1;
+//        }
+//        String uri = String.format(, commentId, pagina);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "Bearer " + TOKEN);
+//        HttpEntity<YoutubeCommentSnippet__1> request = new HttpEntity<>(null, headers);
+//        ResponseEntity<YoutubeCommentSnippet__1> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+//                YoutubeCommentSnippet__1.class);
+//        if (response.getBody() != null) {
+//            res = response.getBody();
+//        }
+//        return res;
+//    }
 }
