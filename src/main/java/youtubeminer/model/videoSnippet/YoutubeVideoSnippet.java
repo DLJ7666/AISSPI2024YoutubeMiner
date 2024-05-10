@@ -12,7 +12,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YoutubeVideoSnippet {
 
-    @JsonProperty("id")
+    @JsonProperty("resourceId")
     private YoutubeVideoSnippetId id;
     @JsonProperty("snippet")
     private YoutubeVideoSnippetDetails snippet;
