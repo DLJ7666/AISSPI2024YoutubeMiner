@@ -65,8 +65,8 @@ public class YoutubeVideoSnippet {
         this.snippet = snippet;
     }
 
-    public void addTexttracks(Collection<YoutubeCaption> texttracks) {
-        this.youtubeCaptions.addAll(texttracks);
+    public void addCaptions(Collection<YoutubeCaption> captions) {
+        this.youtubeCaptions.addAll(captions);
     }
     @Override
     public String toString() {
