@@ -49,4 +49,22 @@ public class videoSnippetService {
         }
         return res;
     }
+
+    public YoutubeVideoSnippetSearch getYoutubeVideoSnippets(String playListId, String pageToken) {
+        YoutubeVideoSnippetSearch res = null;
+        if(pageToken==null) {
+            res = getYoutubeVideoSnippets(playListId);
+        } else {
+            String uri = String.format("https://www.googleapis.com/youtube/v3/playlistItems?" +
+                    "key=%s&part=id&part=snippet&playlistId=%s&pageToken=%s", TOKEN, playListId, pageToken);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<YoutubeVideoSnippetSearch> request = new HttpEntity<>(null, headers);
+            ResponseEntity<YoutubeVideoSnippetSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                    YoutubeVideoSnippetSearch.class);
+            if (response.getBody() != null) {
+                res = response.getBody();
+            }
+        }
+        return res;
+    }
 }

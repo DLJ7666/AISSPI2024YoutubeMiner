@@ -48,4 +48,22 @@ public class captionService {
         }
         return res;
     }
+
+    public YoutubeCaptionSearch getYoutubeCaptions(String videoId, String pageToken) {
+        YoutubeCaptionSearch res = null;
+        if(pageToken==null) {
+            res = getYoutubeCaptions(videoId);
+        } else {
+            String uri = String.format("https://youtube.googleapis.com/youtube/v3/captions?"+
+                    "key=%s&part=id&part=snippet&videoId=%s&pageToken=%s", TOKEN, videoId, pageToken);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<YoutubeCaptionSearch> request = new HttpEntity<>(null, headers);
+            ResponseEntity<YoutubeCaptionSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                    YoutubeCaptionSearch.class);
+            if (response.getBody() != null) {
+                res = response.getBody();
+            }
+        }
+        return res;
+    }
 }

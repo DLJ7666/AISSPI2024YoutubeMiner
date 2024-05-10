@@ -37,7 +37,7 @@ public class commentService {
         return res;
     }
 
-    public YoutubeCommentSearch getYoutubeComments(YoutubeVideoSnippetId videoId) {
+    public YoutubeCommentSearch getYoutubeComments(String videoId) {
         YoutubeCommentSearch res = null;
         String uri = String.format("https://www.googleapis.com/youtube/v3/commentThreads?"+
                 "key=%s&textFormat=plainText&part=snippet&part=id&videoId=%s", TOKEN, videoId);
@@ -47,6 +47,24 @@ public class commentService {
                 YoutubeCommentSearch.class);
         if (response.getBody() != null) {
             res = response.getBody();
+        }
+        return res;
+    }
+
+    public YoutubeCommentSearch getYoutubeComments(String videoId, String pageToken) {
+        YoutubeCommentSearch res = null;
+        if(pageToken==null) {
+            res = getYoutubeComments(videoId);
+        } else {
+            String uri = String.format("https://www.googleapis.com/youtube/v3/commentThreads?key=%s"+
+                    "&textFormat=plainText&part=snippet&part=id&videoId=%s&pageToken=%s", TOKEN, videoId, pageToken);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<YoutubeCommentSearch> request = new HttpEntity<>(null, headers);
+            ResponseEntity<YoutubeCommentSearch> response = restTemplate.exchange(uri, HttpMethod.GET, request,
+                    YoutubeCommentSearch.class);
+            if (response.getBody() != null) {
+                res = response.getBody();
+            }
         }
         return res;
     }
