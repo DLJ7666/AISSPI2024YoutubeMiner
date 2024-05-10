@@ -47,7 +47,7 @@ public class YoutubeVideoSnippet {
         this.youtubeCaptions = youtubeCaptions;
     }
 
-    public YoutubeVideoSnippetId getResourceIdId() {
+    public YoutubeVideoSnippetId getResourceId() {
         return resourceId;
     }
 
