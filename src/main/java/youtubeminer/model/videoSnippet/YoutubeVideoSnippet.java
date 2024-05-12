@@ -47,10 +47,12 @@ public class YoutubeVideoSnippet {
         this.youtubeCaptions = youtubeCaptions;
     }
 
+    @JsonProperty("resourceId")
     public YoutubeVideoSnippetId getResourceId() {
         return resourceId;
     }
 
+    @JsonProperty("resourceId")
     public void setId(YoutubeVideoSnippetId resourceId) {
         this.resourceId = resourceId;
     }
