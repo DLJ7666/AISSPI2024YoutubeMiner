@@ -1,4 +1,4 @@
-package youtubeminer.service;
+package youtubeminer.youtubeservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -10,11 +10,8 @@ import org.springframework.web.client.RestTemplate;
 import youtubeminer.model.videoSnippet.YoutubeVideoSnippet;
 import youtubeminer.model.videoSnippet.YoutubeVideoSnippetSearch;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class videoSnippetService {
+public class YoutubeVideoSnippetService {
 
     @Autowired
     RestTemplate restTemplate;
