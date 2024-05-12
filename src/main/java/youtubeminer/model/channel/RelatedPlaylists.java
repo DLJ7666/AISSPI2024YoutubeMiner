@@ -13,6 +13,10 @@ public class RelatedPlaylists {
         this.uploadsPlayListId = uploadsPlayListId;
     }
 
+    public RelatedPlaylists() {
+        super();
+    }
+
     public String getUploadsPlayListId() {
         return uploadsPlayListId;
     }

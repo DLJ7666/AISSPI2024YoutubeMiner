@@ -9,6 +9,7 @@ public class ResourceId {
     @JsonProperty("videoId")
     String id;
 
+    @JsonProperty("videoId")
     public String getId() {
         return id;
     }
@@ -17,6 +18,11 @@ public class ResourceId {
         this.id = id;
     }
 
+    public ResourceId() {
+        super();
+    }
+
+    @JsonProperty("videoId")
     public void setId(String id) {
         this.id = id;
     }

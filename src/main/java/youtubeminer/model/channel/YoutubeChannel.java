@@ -25,6 +25,13 @@ public class YoutubeChannel {
         videos = new ArrayList<>();
     }
 
+    public YoutubeChannel(String id, YoutubeChannelSnippet snippet, ContentDetails playListIdWrapper) {
+        this.id = id;
+        this.snippet = snippet;
+        this.playListIdWrapper = playListIdWrapper;
+        this.videos = new ArrayList<>();
+    }
+
     @JsonProperty("videos")
     public List<YoutubeVideoSnippet> getVideos(){ return videos; }
 
@@ -69,9 +76,9 @@ public class YoutubeChannel {
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
-        sb.append(("contentDetails="));
+        sb.append(("playListIdWrapper="));
         sb.append((this.playListIdWrapper == null)?"<null>":this.playListIdWrapper);
-        sb.append("snippet");
+        sb.append(",snippet");
         sb.append('=');
         sb.append(((this.snippet == null)?"<null>":this.snippet));
         sb.append(',');

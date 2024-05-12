@@ -13,6 +13,10 @@ public class ContentDetails {
         this.playListsIds = playListsIds;
     }
 
+    public ContentDetails() {
+        super();
+    }
+
     public RelatedPlaylists getPlayListsIds() {
         return playListsIds;
     }

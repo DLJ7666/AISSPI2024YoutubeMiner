@@ -9,6 +9,9 @@ public class YoutubeVideoSnippetId {
     @JsonProperty("videoId")
     private String videoId;
 
+    public YoutubeVideoSnippetId() {
+        super();
+    }
     @JsonProperty("videoId")
     public String getVideoId() {
         return videoId;
